@@ -47,3 +47,4 @@ if __name__ == "__main__":
             grades.append(translate_grade(grade))
         elif grade == "a":
             print(calculate_avrage(grades))
+            break
