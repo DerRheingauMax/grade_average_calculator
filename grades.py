@@ -40,11 +40,11 @@ def calculate_avrage(grades:list):
 if __name__ == "__main__":
     grades = []
     while True:
-        grade = input("grade: ")
+        grade = input("[grade]/result: ")
         if grade == "":
             break
-        elif not translate_grade(grade):
+        elif translate_grade(grade) != False:
             grades.append(translate_grade(grade))
-        elif grade == "a":
+        elif grade in ["r","result"]:
             print(calculate_avrage(grades))
             break
