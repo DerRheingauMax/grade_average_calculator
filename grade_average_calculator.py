@@ -1,3 +1,5 @@
+import math
+
 def translate_grade(grade_str:str):
     grade_float =0.0
     try:
@@ -35,18 +37,29 @@ def calculate_avrage(grades:list):
     for i in grades:
         grades_sum += i
     return grades_sum/len(grades)
-
+    
+def retranslate_grade(grade_float:float):
+	if int(grade_float) - grade_float == 0:
+		return str(int(grade_float))
+	else:
+		grade_decimal = grade_float % math.floor(grade_float)
+		if grade_decimal == 0.5:
+			return f'{math.floor(grade_float)}-/{math.ceil(grade_float)}+'
+		elif grade_decimal <0.5:
+			return f'{int(grade_float)}+'
+		elif grade_decimal > 0.5:
+			return f'{int(grade_float)}-'
 
 if __name__ == "__main__":
     grades = []
     grades_str = ""
     while True:
-        grade = input("[grade]/result: ")
+        grade = input("[grade]/(r)esult: ")
         if grade == "":
             break
         elif grade in ["r","result"]:
             print(f'The avrage of the grades {grades_str}:')
-            print(calculate_avrage(grades))
+            print(f'{calculate_avrage(grades)}       {retranslate_grade(calculate_avrage(grades))}')
             break
         elif translate_grade(grade) != False:
             grades.append(translate_grade(grade))
