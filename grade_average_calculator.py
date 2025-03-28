@@ -3,9 +3,12 @@ import math
 def translate_grade(grade_str:str):
     grade_float =0.0
     try:
-        grade_int = int(grade_str)
+        grade_float = float(grade_str)
+        grade_int = int(grade_float)
         if grade_int not in [1,2,3,4,5,6]:
             return False
+        elif grade_float > 0 and grade_float < 6.3:
+        	return grade_float
         else:
             grade_float = float(grade_int)
     except:
@@ -59,7 +62,7 @@ if __name__ == "__main__":
             break
         elif grade in ["r","result"]:
             print(f'The avrage of the grades {grades_str}:')
-            print(f'{calculate_avrage(grades)}       {retranslate_grade(calculate_avrage(grades))}')
+            print(f'{round(calculate_avrage(grades),2)}       {retranslate_grade(calculate_avrage(grades))}')
             break
         elif translate_grade(grade) != False:
             grades.append(translate_grade(grade))
