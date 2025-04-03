@@ -4,11 +4,11 @@ def translate_grade(grade_str:str):
     grade_float =0.0
     try:
         grade_float = float(grade_str)
-        grade_int = int(grade_float)
+        grade_int = round(grade_float)
         if grade_int not in [1,2,3,4,5,6]:
             return False
         elif grade_float > 0 and grade_float < 6.3:
-        	return grade_float
+            return grade_float
         else:
             grade_float = float(grade_int)
     except:
@@ -35,23 +35,25 @@ def translate_grade(grade_str:str):
                     grade_float -= 0.3
     return grade_float
 
-def calculate_avrage(grades:list):
+def calculate_average(grades:list):
     grades_sum= 0.0
     for i in grades:
         grades_sum += i
     return grades_sum/len(grades)
     
 def retranslate_grade(grade_float:float):
-	if int(grade_float) - grade_float == 0:
-		return str(int(grade_float))
-	else:
-		grade_decimal = grade_float % math.floor(grade_float)
-		if grade_decimal == 0.5:
-			return f'{math.floor(grade_float)}-/{math.ceil(grade_float)}+'
-		elif grade_decimal <0.5:
-			return f'{int(grade_float)}+'
-		elif grade_decimal > 0.5:
-			return f'{int(grade_float)}-'
+    if round(grade_float) - grade_float == 0:
+        return str(round(grade_float))
+    else:
+        grade_decimal = round(grade_float % math.floor(grade_float),2)
+        if grade_decimal == 0.5:
+            return f'{math.floor(grade_float)}-/{math.ceil(grade_float)}+'
+        elif grade_decimal > 0.5 and grade_decimal <= 0.7:
+            return f'{round(grade_float)}+'
+        elif grade_decimal >= 0.3 and grade_decimal < 0.5:
+            return f'{round(grade_float)}-'
+        elif grade_decimal < 0.3 or grade_decimal > 0.7:
+            return str(round(grade_float))
 
 if __name__ == "__main__":
     grades = []
@@ -62,13 +64,13 @@ if __name__ == "__main__":
             break
         elif grade in ["r","result"]:
             print(f'The avrage of the grades {grades_str}:')
-            print(f'{round(calculate_avrage(grades),2)}       {retranslate_grade(calculate_avrage(grades))}')
+            print(f'{round(calculate_average(grades),2)}       {retranslate_grade(calculate_average(grades))}')
             break
         elif translate_grade(grade) != False:
             grades.append(translate_grade(grade))
             if len(grades_str) == 0:
-            	grades_str += grade
+                grades_str += grade
             else:
-            	grades_str += f', {grade}'
+                grades_str += f', {grade}'
         elif translate_grade(grade) == False:
         	print("Error: wrong Input: Input was ignored")
