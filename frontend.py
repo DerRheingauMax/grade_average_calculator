@@ -7,38 +7,60 @@ root = tk.Tk()
 root.geometry("600x500")
 
 grades = []
-grade_type = "grades"
+grade_type = "points"
 grade_row_widgets = []
 
 def submit_grade():
+    global grades, grade_type,grade_row_widgets
     input = grade_entry.get()
-    # if grade_type == "grades" and translate_grade(grade) != False:
-    #     continue
-
-    grade_float = be.translate_grade(input)
-    if grade_float == False:
-        print("no")
-        return
-    else:
+    if grade_type == "grades" and be.translate_grade(input) != False:
+        grade_float = be.translate_grade(input)
+        grades.append(grade_float)
         enter_in_table(grade_float, grade_row_widgets)
         grade_entry.delete(0, tk.END)
-        grades.append(grade_float)
-        grade_row_widgets[6][0][1].config(text=round(be.calculate_average(grades), 2))
+        grade_row_widgets[-1][0][1].config(text=round(be.calculate_average(grades), 2))
+    elif grade_type == "points":
+        try:
+            point_float = float(input)
+            if round(point_float) not in range(0, 16):
+                    int("")  # to get the input ignored massage
+            grades.append(point_float)
+            enter_in_table(point_float,grade_row_widgets)
+            grade_entry.delete(0,tk.END)
+            grade_row_widgets[-1][1].config(text=round(be.calculate_average(grades), 2))
+        except ValueError:
+            print("no")
+            return
+    else:
+        print("no")
+        return
+
+
 
 def enter_in_table(grade_float: float, row_widgets):
-    grade_str = be.retranslate_grade(grade_float)
-    if "+" in grade_str:
-        row_widgets[round(grade_float - 1)][0][2] += 1
-        text = row_widgets[round(grade_float - 1)][0][2]
-        row_widgets[round(grade_float) - 1][0][1].config(text=str(text))
-    elif "-" in grade_str:
-        row_widgets[round(grade_float - 1)][2][2] += 1
-        text = row_widgets[round(grade_float - 1)][2][2]
-        row_widgets[round(grade_float) - 1][2][1].config(text=str(text))
-    else:
-        row_widgets[round(grade_float - 1)][1][2] += 1
-        text = row_widgets[round(grade_float - 1)][1][2]
-        row_widgets[round(grade_float) - 1][1][1].config(text=str(text))
+    global grade_type
+    if grade_type == "gardes":
+        grade_str = be.retranslate_grade(grade_float)
+        if "+" in grade_str:
+            row_widgets[round(grade_float - 1)][0][2] += 1
+            text = row_widgets[round(grade_float - 1)][0][2]
+            row_widgets[round(grade_float) - 1][0][1].config(text=str(text))
+        elif "-" in grade_str:
+            row_widgets[round(grade_float - 1)][2][2] += 1
+            text = row_widgets[round(grade_float - 1)][2][2]
+            row_widgets[round(grade_float) - 1][2][1].config(text=str(text))
+        else:
+            row_widgets[round(grade_float - 1)][1][2] += 1
+            text = row_widgets[round(grade_float - 1)][1][2]
+            row_widgets[round(grade_float) - 1][1][1].config(text=str(text))
+    elif grade_type == "points":
+        grade_str = str(round(grade_float))
+        print(row_widgets)
+        print(row_widgets[16-round(grade_float)][2])
+        row_widgets[16-round(grade_float)][2] +=1
+        text = row_widgets[16-round(grade_float)][2]
+        row_widgets[16-round(grade_float)][1].config(text=text)
+
 
 def switch_grade_type():
     global grade_type
@@ -108,7 +130,7 @@ def generate_point_table(frame):
                 table, highlightbackground="black", highlightthickness=1
             )
         label_second = tk.Label(box_second, text="0")
-        second_row_widgets.append([box_second,label_second])
+        second_row_widgets.append([box_second,label_second,0])
         box_second.grid(row=1,column=index)
         label_second.pack()
     return table, second_row_widgets
