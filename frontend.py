@@ -4,7 +4,7 @@ from tkinter import ttk
 import grade_average_calculator as be
 
 root = tk.Tk()
-root.geometry("600x500")
+root.geometry("650x500")
 
 grades = []
 grade_type = "points"
